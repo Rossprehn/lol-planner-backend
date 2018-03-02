@@ -23,78 +23,13 @@ app.get('/', (request, response) => {
     )
     .catch(console.error)
 })
+
+//event
 app.get('/event', (request, response) => {
   queries
     .list('event')
     .then(event => {
       response.json({ event })
-    })
-    .catch(console.error)
-})
-
-app.get('/players', (request, response) => {
-  queries
-    .list('players')
-    .then(players => {
-      response.json({ players })
-    })
-    .catch(console.error)
-})
-app.get('/event_players', (response, response) =>
-  queries.getJoinedData()
-  .then(data => response.send.data)
-)
-
-app.get('/signedup/:id', (request, response) => {
-  queries
-    .signedup(request.params.id)
-    .then(players => {
-      response.json({ players })
-    })
-    .catch(console.error)
-})
-
-app.get('/event/:id', (request, response) => {
-  queries
-    .signedup(request.params.id)
-    .then(event => {
-      response.json({ event })
-    })
-    .catch(console.error)
-})
-
-app.get('/event_players', (request, response) => {
-  queries
-    .list('event_players')
-    .then(event_players => {
-      response.json({ event_players })
-    })
-    .catch(console.error)
-})
-
-app.get('/signedup/:id', (request, response) => {
-  queries
-    .read(request.params.id)
-    .then(question => {
-      question ? response.json({ question }) : response.sendStatus(404)
-    })
-    .catch(console.error)
-})
-
-app.get('/players/:id', (request, response) => {
-  queries
-    .read('players', request.params.id)
-    .then(solver => {
-      solver ? response.json({ solver }) : response.sendStatus(404)
-    })
-    .catch(console.error)
-})
-
-app.get('/event_players/:id', (request, response) => {
-  queries
-    .read('event_players', request.params.id)
-    .then(event_players => {
-      question_solver ? response.json({ question_solver }) : response.sendStatus(404)
     })
     .catch(console.error)
 })
@@ -107,25 +42,13 @@ app.post('/event', (request, response) => {
     })
     .catch(console.error)
 })
-
-app.post('/players', (request, response) => {
+//event id
+app.get('/event/:id', (request, response) =>
   queries
-    .create('players', request.body)
-    .then(players => {
-      response.status(201).json({ players })
-    })
-    .catch(console.error)
-})
-
-app.post('/event_players', (request, response) => {
-  queries
-    .create('event_players', request.body)
-    .then(event_players => {
-      response.status(201).json({ event_players })
-    })
-    .catch(console.error)
-})
-
+    .getJoinedData()
+    .where('event.id', request.params.id)
+    .then(data => response.send(data))
+)
 app.delete('/event/:id', (request, response) => {
   queries
     .delete('event', request.params.id)
@@ -135,6 +58,41 @@ app.delete('/event/:id', (request, response) => {
     .catch(console.error)
 })
 
+// app.put('/event/:id', (request, response) => {
+//   queries
+//     .update('event', request.params.id, request.body)
+//     .then(question => {
+//       response.json({ question })
+//     })
+//     .catch(console.error)
+// })
+
+//players
+app.get('/players', (request, response) => {
+  queries
+    .list('players')
+    .then(players => {
+      response.json({ players })
+    })
+    .catch(console.error)
+})
+app.post('/players', (request, response) => {
+  queries
+    .create('players', request.body)
+    .then(players => {
+      response.status(201).json({ players })
+    })
+    .catch(console.error)
+})
+//players id
+app.get('/players/:id', (request, response) => {
+  queries
+    .read('players', request.params.id)
+    .then(players => {
+      players ? response.json({ players }) : response.sendStatus(404)
+    })
+    .catch(console.error)
+})
 app.delete('/players/:id', (request, response) => {
   queries
     .delete('players', request.params.id)
@@ -144,6 +102,41 @@ app.delete('/players/:id', (request, response) => {
     .catch(console.error)
 })
 
+//event players
+app.get('/event_players', (request, response) =>
+  queries.getJoinedData().then(data => response.send(data))
+)
+app.get('/event_players', (request, response) => {
+  queries
+    .list('event_players')
+    .then(event_players => {
+      response.json({ event_players })
+    })
+    .catch(console.error)
+})
+app.post('/event_players', (request, response) => {
+  queries
+    .create('event_players', request.body)
+    .then(event_players => {
+      response.status(201).json({ event_players })
+    })
+    .catch(console.error)
+})
+
+app.get('/event_players/:id', (request, response) => {
+  queries
+    .read('event_players', request.params.id)
+    .then(event_players => {
+      event_players ? response.json({ event_players }) : response.sendStatus(404)
+    })
+    .catch(console.error)
+})
+app.get('/event_players/:id', (request, response) =>
+  queries
+    .getJoinedData()
+    .where('players.id', request.params.id)
+    .then(data => response.send(data))
+)
 app.delete('/event_players/:id', (request, response) => {
   queries
     .delete('event_players', request.params.id)
@@ -153,14 +146,32 @@ app.delete('/event_players/:id', (request, response) => {
     .catch(console.error)
 })
 
-app.put('/event/:id', (request, response) => {
-  queries
-    .update('event', request.params.id, request.body)
-    .then(question => {
-      response.json({ question })
-    })
-    .catch(console.error)
-})
+// app.get('/signedup/:id', (request, response) => {
+//   queries
+//     .signedup(request.params.id)
+//     .then(players => {
+//       response.json({ players })
+//     })
+//     .catch(console.error)
+// })
+
+// app.get('/event/:id', (request, response) => {
+//   queries
+//     .signedup(request.params.id)
+//     .then(event => {
+//       response.json({ event })
+//     })
+//     .catch(console.error)
+// })
+
+// app.get('/signedup/:id', (request, response) => {
+//   queries
+//     .read(request.params.id)
+//     .then(question => {
+//       question ? response.json({ question }) : response.sendStatus(404)
+//     })
+//     .catch(console.error)
+// })
 
 app.use((request, response) => {
   response.sendStatus(404)
