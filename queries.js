@@ -31,8 +31,20 @@ module.exports = {
   signedup(eventID) {
     return database('players')
       .join('event_players', 'players.id', '=', 'event_players.players_id')
-      .join('event', 'event.id', '=', 'event_playerss.event_id')
-      .select('playerss.players_name')
+      .join('event', 'event.id', '=', 'event_players.event_id')
+      .select('players.players_name')
       .where('event.id', eventID)
+  },
+  getJoinedData() {
+    return database('event')
+      .join('event_players', 'event.id', '=', 'event_players.event_id')
+      .join('players', 'players.id', '=', 'event_players.players_id')
+  },
+  getPlayerId(id) {
+    return getJoinedData().where('players_id', id)
+  },
+
+  testJoin(table) {
+    console.log('Sql string:', getJoinedData().toSQL())
   }
 }

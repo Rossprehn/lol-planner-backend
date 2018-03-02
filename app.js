@@ -40,6 +40,10 @@ app.get('/players', (request, response) => {
     })
     .catch(console.error)
 })
+app.get('/event_players', (response, response) =>
+  queries.getJoinedData()
+  .then(data => response.send.data)
+)
 
 app.get('/signedup/:id', (request, response) => {
   queries
