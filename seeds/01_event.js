@@ -19,7 +19,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 3,
-          title: 'cassual sunday',
+          title: 'casual sunday',
           date: '3/21/18',
           time: '2:00pm',
           description: 'LFT to work on my toplane'

@@ -16,9 +16,9 @@ module.exports = {
       .returning('*')
       .then(record => record[0])
   },
-  update(table, id, question) {
+  update(table, id, event) {
     return database(table)
-      .update(question)
+      .update(event)
       .where('id', id)
       .returning('*')
       .then(record => record[0])
@@ -28,13 +28,13 @@ module.exports = {
       .delete()
       .where('id', id)
   },
-  signedup(eventID) {
-    return database('players')
-      .join('event_players', 'players.id', '=', 'event_players.players_id')
-      .join('event', 'event.id', '=', 'event_players.event_id')
-      .select('players.players_name')
-      .where('event.id', eventID)
-  },
+  // signedup(eventID) {
+  //   return database('players')
+  //     .join('event_players', 'players.id', '=', 'event_players.players_id')
+  //     .join('event', 'event.id', '=', 'event_players.event_id')
+  //     .select('players.players_name')
+  //     .where('event.id', eventID)
+  // },
   getJoinedData() {
     return database('event')
       .join('event_players', 'event.id', '=', 'event_players.event_id')
