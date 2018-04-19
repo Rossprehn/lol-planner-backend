@@ -28,18 +28,11 @@ module.exports = {
       .delete()
       .where('id', id)
   },
-  // signedup(eventID) {
-  //   return database('players')
-  //     .join('event_players', 'players.id', '=', 'event_players.players_id')
-  //     .join('event', 'event.id', '=', 'event_players.event_id')
-  //     .select('players.players_name')
-  //     .where('event.id', eventID)
+  // getJoinedData() {
+  //   return database('event')
+  //     .join('event_players', 'event.id', '=', 'event_players.event_id')
+  //     .join('players', 'players.id', '=', 'event_players.players_id')
   // },
-  getJoinedData() {
-    return database('event')
-      .join('event_players', 'event.id', '=', 'event_players.event_id')
-      .join('players', 'players.id', '=', 'event_players.players_id')
-  },
   getPlayerId(id) {
     return getJoinedData().where('players_id', id)
   },

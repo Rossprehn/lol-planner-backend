@@ -42,13 +42,24 @@ app.post('/event', (request, response) => {
     })
     .catch(console.error)
 })
+
 //event id
-app.get('/event/:id', (request, response) =>
+app.get('/event/:id', (request, response) => {
   queries
-    .getJoinedData()
-    .where('event.id', request.params.id)
-    .then(data => response.send(data))
-)
+    .read('event', request.params.id)
+    .then(event => {
+      event ? response.json({ event }) : response.sendStatus(404)
+    })
+    .catch(console.error)
+})
+
+//for join table
+// app.get('/event/:id', (request, response) =>
+//   queries
+//     .getJoinedData()
+//     .where('event.id', request.params.id)
+//     .then(data => response.send(data))
+// )
 app.delete('/event/:id', (request, response) => {
   queries
     .delete('event', request.params.id)
@@ -145,33 +156,6 @@ app.delete('/event_players/:id', (request, response) => {
     })
     .catch(console.error)
 })
-
-// app.get('/signedup/:id', (request, response) => {
-//   queries
-//     .signedup(request.params.id)
-//     .then(players => {
-//       response.json({ players })
-//     })
-//     .catch(console.error)
-// })
-
-// app.get('/event/:id', (request, response) => {
-//   queries
-//     .signedup(request.params.id)
-//     .then(event => {
-//       response.json({ event })
-//     })
-//     .catch(console.error)
-// })
-
-// app.get('/signedup/:id', (request, response) => {
-//   queries
-//     .read(request.params.id)
-//     .then(question => {
-//       question ? response.json({ question }) : response.sendStatus(404)
-//     })
-//     .catch(console.error)
-// })
 
 app.use((request, response) => {
   response.sendStatus(404)
