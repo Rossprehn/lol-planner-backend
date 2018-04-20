@@ -69,14 +69,16 @@ app.delete('/event/:id', (request, response) => {
     .catch(console.error)
 })
 
-// app.put('/event/:id', (request, response) => {
-//   queries
-//     .update('event', request.params.id, request.body)
-//     .then(question => {
-//       response.json({ question })
-//     })
-//     .catch(console.error)
-// })
+app.put('/event/:id', (request, response) => {
+  console.log('hello from put')
+
+  queries
+    .update('event', request.params.id, request.body)
+    .then(event => {
+      response.json({ event })
+    })
+    .catch(console.error)
+})
 
 //players
 app.get('/players', (request, response) => {
@@ -109,6 +111,15 @@ app.delete('/players/:id', (request, response) => {
     .delete('players', request.params.id)
     .then(() => {
       response.sendStatus(204)
+    })
+    .catch(console.error)
+})
+
+app.put('/players/:id', (request, response) => {
+  queries
+    .update('players', request.params.id, request.body)
+    .then(players => {
+      response.json({ players })
     })
     .catch(console.error)
 })
